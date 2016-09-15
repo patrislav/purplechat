@@ -1,0 +1,48 @@
+{
+  "name": "patrislav-chat",
+  "version": "0.1.0",
+  "description": "A modern React chat application",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server --content-base build/ --port 3000",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Patryk Kalinowski <patrislav7@gmail.com>",
+  "license": "ISC",
+  "eslintConfig": {
+    "extends": "eslint-config-patrislav",
+    "env": {
+      "browser": true,
+      "es6": true
+    }
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-0",
+      "react"
+    ],
+    "plugins": []
+  },
+  "dependencies": {
+    "material-ui": "^0.15.4",
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1",
+    "react-tap-event-plugin": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-0": "^6.5.0",
+    "eslint": "^3.5.0",
+    "eslint-config-patrislav": "^0.1.0",
+    "eslint-plugin-import": "^1.15.0",
+    "eslint-plugin-react": "^6.2.2",
+    "file-loader": "^0.9.0",
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.15.2"
+  }
+}
