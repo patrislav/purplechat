@@ -33,6 +33,13 @@ const config = {
       }
     ]
   },
+  resolve: {
+    root: path.resolve(__dirname, 'app'),
+    extensions: ['', '.js'],
+    alias: {
+      components: 'components'
+    }
+  },
   devtool: DEBUG && 'source-map'
 }
 

@@ -1,11 +1,11 @@
 {
-  "name": "patrislav-chat",
+  "name": "purple-chat",
   "version": "0.1.0",
   "description": "A modern React chat application",
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "start": "webpack-dev-server --content-base build/ --port 3000",
+    "start": "webpack-dev-server --content-base build/ --port 3000 --host 0.0.0.0",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Patryk Kalinowski <patrislav7@gmail.com>",
