@@ -23,3 +23,6 @@ node_modules
 
 # Build artefacts
 /build
+
+# Firebase info
+.firebaserc
