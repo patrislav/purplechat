@@ -1,7 +1,7 @@
+/* eslint-env node */
 'use strict'
 
 const path = require('path')
-const fs = require('fs')
 const pkg = require('./package.json')
 
 const DEBUG = true
@@ -37,7 +37,8 @@ const config = {
     root: path.resolve(__dirname, 'app'),
     extensions: ['', '.js'],
     alias: {
-      components: 'components'
+      components: 'components',
+      core: 'core'
     }
   },
   devtool: DEBUG && 'source-map'

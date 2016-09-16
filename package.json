@@ -27,7 +27,9 @@
   },
   "dependencies": {
     "firebase": "^3.4.0",
+    "history": "^4.2.0",
     "material-ui": "^0.15.4",
+    "path-to-regexp": "^1.5.3",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
     "react-tap-event-plugin": "^1.0.0"

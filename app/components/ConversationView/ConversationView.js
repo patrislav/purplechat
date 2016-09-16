@@ -25,7 +25,7 @@ export default class ConversationView extends React.Component {
   render() {
     return (
       <div style={containerStyle}>
-        <div ref="messageList" style={{ flex: '1 1 auto', overflowY: 'scroll' }}>
+        <div ref="messageList" style={{ flex: '1 1 auto', overflowY: 'auto' }}>
           <MessageList messages={this.state.messages} />
         </div>
         <div style={{ flex: '0 0 auto' }}>
