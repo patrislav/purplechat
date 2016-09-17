@@ -3,8 +3,8 @@ import Message from './Message'
 
 const MessageList = (props) => (
   <div>
-    {props.messages.map((message, i) =>
-      <Message key={i} incoming={message.incoming}>{message.text}</Message>
+    {props.messages.map((message) =>
+      <Message key={message.key} message={message} />
     )}
   </div>
 )

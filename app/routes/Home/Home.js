@@ -1,5 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import Actions from 'actions'
 import {ListItem} from 'material-ui/List'
 import {MenuItem} from 'material-ui/Menu'
 import Avatar from 'material-ui/Avatar'
@@ -11,14 +13,23 @@ import firebase from 'core/firebase'
 
 @connect(state => ({
   auth: state.auth,
-  chats: []
+  chats: state.chats
 }))
 export default class Home extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
+    this.actions = bindActionCreators(Actions, this.props.dispatch)
     this.state = {
       drawerOpen: false
     }
+  }
+
+  componentDidMount() {
+    this.actions.startChatsListener()
+  }
+
+  componentWillUnmount() {
+    // this.actions.stopChatsListener()
   }
 
   render() {

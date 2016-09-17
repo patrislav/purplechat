@@ -1,12 +1,13 @@
 /* eslint-env node */
 'use strict'
 
+const webpack = require('webpack')
 const path = require('path')
 const pkg = require('./package.json')
 
-const DEBUG = true
+const DEBUG = process.env.NODE_ENV !== 'production'
 
-const config = {
+let config = {
   entry: [
     path.resolve(__dirname, 'app/client.js')
   ],
@@ -44,7 +45,24 @@ const config = {
       routes: 'routes'
     }
   },
-  devtool: DEBUG && 'source-map'
+  devtool: DEBUG ? 'source-map' : 'cheap-module-source-map'
+}
+
+if (!DEBUG) {
+  config.plugins = [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }),
+    new webpack.optimize.AggressiveMergingPlugin()
+  ]
 }
 
 module.exports = config

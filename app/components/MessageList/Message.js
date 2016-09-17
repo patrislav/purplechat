@@ -24,10 +24,12 @@ const Message = (props, context) => {
     color: context.muiTheme.palette.alternateTextColor
   }
 
+  const { message } = props
+
   return (
     <div style={Object.assign({}, props.style, style)}>
-      <Paper style={Object.assign({}, paperStyle, props.incoming ? incomingStyle : outgoingStyle)}>
-        {props.children}
+      <Paper style={Object.assign({}, paperStyle, message.isMine ? outgoingStyle : incomingStyle)}>
+        {message.text}
       </Paper>
     </div>
   )

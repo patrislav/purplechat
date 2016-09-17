@@ -15,12 +15,15 @@ export default [
       else if (auth.status) {
         resolve(<Landing />)
       }
+      else {
+        console.log('Hello? What happened?', auth)
+      }
     })
   },
   {
     path: '/messages/:chatId',
     action: ({ params }) => new Promise((resolve) => {
-      setTimeout(() => resolve(<Conversation chatId={params.chatId} />), 500)
+      resolve(<Conversation chatId={params.chatId} />)
     })
   }
 ]

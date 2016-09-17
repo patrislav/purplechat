@@ -5,12 +5,17 @@ import {ListItem} from 'material-ui/List'
 const Chat = (props) => {
   const { chat, ...other } = props
 
+  let lastMessage = ''
+  if (chat.lastMessage) {
+    lastMessage = chat.lastMessage.text
+  }
+
   return (
     <ListItem
       {...other}
-      primaryText={chat.name}
-      secondaryText={chat.lastMessage}
-      leftAvatar={<Avatar src={chat.avatarUrl} />}
+      primaryText={chat.user.displayName}
+      secondaryText={lastMessage}
+      leftAvatar={<Avatar src={chat.user.photoURL} />}
       />
   )
 }

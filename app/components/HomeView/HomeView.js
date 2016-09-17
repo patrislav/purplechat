@@ -12,7 +12,7 @@ const actionButtonStyle = {
 
 const HomeView = ({ chats }) => (
   <div>
-    <ChatList chats={chats} onSelect={(chat) => history.push(`/messages/${chat.id}`)} />
+    <ChatList chats={chats} onSelect={(chat) => history.push(`/messages/${chat.key}`)} />
     <FloatingActionButton style={actionButtonStyle}>
       <ContentAdd />
     </FloatingActionButton>

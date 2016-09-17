@@ -14,8 +14,8 @@ export default class Router extends React.Component {
   }
 
   componentDidMount() {
-    const { history, auth } = this.props
-    this.unlisten = history.listen(location => this.resolveLocation(location, auth))
+    const { history } = this.props
+    this.unlisten = history.listen(location => this.resolveLocation(location, this.props.auth))
   }
 
   componentWillReceiveProps(props) {

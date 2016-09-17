@@ -10,6 +10,17 @@ export function startAuthListener() {
           type: 'LOGIN',
           uid, displayName, photoURL
         })
+
+        // If the user doesn't exist in the /users node, create it
+        const userRef = firebase.database().ref(`users/${uid}`)
+        userRef.once('value', snapshot => {
+          const val = snapshot.val()
+          if (!val) {
+            userRef.set({
+              profile: { displayName, photoURL }
+            })
+          }
+        })
       }
       else {
         const { status } = getState().auth
