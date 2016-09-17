@@ -37,8 +37,11 @@ const config = {
     root: path.resolve(__dirname, 'app'),
     extensions: ['', '.js'],
     alias: {
+      actions: 'actions',
       components: 'components',
-      core: 'core'
+      core: 'core',
+      reducers: 'reducers',
+      routes: 'routes'
     }
   },
   devtool: DEBUG && 'source-map'

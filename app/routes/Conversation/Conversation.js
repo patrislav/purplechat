@@ -5,7 +5,7 @@ import ConversationBar from 'components/ConversationBar'
 import history from 'core/history'
 
 const Conversation = (props) => (
-  <Shell appBar={<ConversationBar title="Conversation" onGoBack={() => history.push('/messages')} />}>
+  <Shell appBar={<ConversationBar title="Conversation" onGoBack={() => history.push('/')} />}>
     <ConversationView {...props} />
   </Shell>
 )

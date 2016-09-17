@@ -10,16 +10,7 @@ const actionButtonStyle = {
   bottom: '20px'
 }
 
-const chats = [
-  {
-    id: 'aaa',
-    name: 'Satan',
-    lastMessage: 'How many times do I have to tell you people that I am not Santa?!',
-    avatarUrl: "http://wp.patheos.com.s3.amazonaws.com/blogs/christianpiatt/files/2013/02/southpark-satan-300x300.png"
-  }
-]
-
-const HomeView = () => (
+const HomeView = ({ chats }) => (
   <div>
     <ChatList chats={chats} onSelect={(chat) => history.push(`/messages/${chat.id}`)} />
     <FloatingActionButton style={actionButtonStyle}>

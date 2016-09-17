@@ -1,6 +1,18 @@
 {
   "rules": {
-    ".read": "auth != null",
-    ".write": "auth != null"
+    "users": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid"
+      }
+    },
+    "chats": {
+      ".read": true,
+      ".write": true
+    },
+    "messages": {
+      ".read": true,
+      ".write": true
+    }
   }
 }
