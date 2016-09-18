@@ -11,7 +11,11 @@
 
         "chats": {
           "$chatId": {
-            ".validate": "newData.isBoolean() && root.child('chats').hasChild($chatId)"
+            ".validate": "root.child('chats').hasChild($chatId)",
+            "active": { ".validate": "newData.isBoolean()" },
+            "displayName": {
+              ".validate": "newData.isString() && newData.val().length >= 3 && newData.val().length < 50"
+            }
           }
         }
       }

@@ -1,21 +1,76 @@
 import React from 'react'
 import {default as MuiAppBar} from 'material-ui/AppBar'
 import IconButton from 'material-ui/IconButton'
+import IconMenu from 'material-ui/IconMenu'
+import MenuItem from 'material-ui/MenuItem'
 import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back'
 import MoreVert from 'material-ui/svg-icons/navigation/more-vert'
 import ConversationStatus from './ConversationStatus'
+import ChangeChatNameDialog from 'components/ChangeChatNameDialog'
 
-const ConversationBar = (props) => {
-  const { onGoBack, chat, ...otherProps } = props
+export default class ConversationBar extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      dialogOpen: false
+    }
+  }
 
-  return (
-    <MuiAppBar {...otherProps}
-      title={<ConversationStatus chat={chat} />}
-      iconElementLeft={<IconButton onTouchTap={onGoBack}><ArrowBack /></IconButton>}
-      iconElementRight={<IconButton onTouchTap={() => {}}><MoreVert /></IconButton>}
-      onTitleTouchTap={(event) => console.log(event)}
-      />
-  )
+  render() {
+    const { onGoBack, chat, onChangeName, onRestoreDefaultName, ...otherProps } = this.props
+
+    const detailsMenu = (
+      <IconMenu
+        iconButtonElement={<IconButton><MoreVert /></IconButton>}
+        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+        targetOrigin={{horizontal: 'right', vertical: 'top'}}
+        >
+        <MenuItem primaryText="Change name" onTouchTap={this._handleDialogOpen} />
+      </IconMenu>
+    )
+
+    return (
+      <div>
+        <MuiAppBar {...otherProps}
+          title={<ConversationStatus chat={chat} />}
+          iconElementLeft={<IconButton onTouchTap={onGoBack}><ArrowBack /></IconButton>}
+          iconElementRight={detailsMenu}
+          onTitleTouchTap={(event) => console.log(event)}
+        />
+        {chat && this.state.dialogOpen
+          ? <ChangeChatNameDialog
+            open={this.state.dialogOpen}
+            currentName={chat.user.displayName}
+            onRequestClose={this._handleDialogClose}
+            onChangeName={this._handleChangeName}
+            onRestoreDefault={this._handleRestoreDefault}
+            />
+          : null}
+      </div>
+    )
+  }
+
+  _handleDialogOpen = () => {
+    this.setState({
+      ...this.state,
+      dialogOpen: true
+    })
+  }
+
+  _handleDialogClose = () => {
+    this.setState({
+      ...this.state,
+      dialogOpen: false
+    })
+  }
+
+  _handleChangeName = (newName) => {
+    this.props.onChangeName(newName)
+    this._handleDialogClose()
+  }
+
+  _handleRestoreDefault = () => {
+    this.props.onRestoreDefaultName()
+    this._handleDialogClose()
+  }
 }
-
-export default ConversationBar

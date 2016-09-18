@@ -15,12 +15,12 @@ export default function(state = initialState, action) {
   }
 
   case 'CHAT_UPDATE': {
-    const { key, lastMessage } = action
+    const { key, user } = action
     state = state.slice(0)
 
     const index = state.findIndex(chat => chat.key === key)
     if (index > -1) {
-      state[index] = Object.assign({}, state[index], { lastMessage })
+      state[index] = Object.assign({}, state[index], { user })
     }
 
     return state

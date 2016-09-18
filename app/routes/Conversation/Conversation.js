@@ -32,8 +32,17 @@ export default class Conversation extends React.Component {
     const { chatId, allMessages, chat } = this.props
     const messages = allMessages[chatId] || []
 
+    const appBar = (
+      <ConversationBar
+        chat={chat}
+        onGoBack={() => history.push('/')}
+        onChangeName={this._handleChangeName}
+        onRestoreDefaultName={this._handleRestoreDefaultName}
+        />
+    )
+
     return (
-      <Shell appBar={<ConversationBar chat={chat} onGoBack={() => history.push('/')} />}>
+      <Shell appBar={appBar}>
         <ConversationView {...this.props} messages={messages} onSendMessage={this._handleSendMessage} />
       </Shell>
     )
@@ -42,6 +51,14 @@ export default class Conversation extends React.Component {
   _handleSendMessage = (text) => {
     const { userId, chatId } = this.props
     this.actions.sendMessage(chatId, userId, text)
+  }
+
+  _handleChangeName = (newName) => {
+    this.actions.changeChatName(this.props.chatId, newName)
+  }
+
+  _handleRestoreDefaultName = () => {
+    this.actions.restoreDefaultChatName(this.props.chatId)
   }
 }
 
