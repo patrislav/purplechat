@@ -8,8 +8,9 @@ import ConversationBar from 'components/ConversationBar'
 import history from 'core/history'
 import firebase from 'core/firebase'
 
-@connect(state => ({
+@connect((state, ownProps) => ({
   userId: state.auth.uid,
+  chat: state.chats.find(chat => chat.key === ownProps.chatId),
   allMessages: state.messages
 }))
 export default class Conversation extends React.Component {
@@ -19,6 +20,7 @@ export default class Conversation extends React.Component {
   }
 
   componentDidMount() {
+    this.actions.startChatsListener()
     this.actions.startMessagesListener(this.props.chatId)
   }
 
@@ -27,12 +29,12 @@ export default class Conversation extends React.Component {
   }
 
   render() {
-    const { allMessages, chatId } = this.props
-    const chatMessages = allMessages[chatId] || []
+    const { chatId, allMessages, chat } = this.props
+    const messages = allMessages[chatId] || []
 
     return (
-      <Shell appBar={<ConversationBar title="Conversation" onGoBack={() => history.push('/')} />}>
-        <ConversationView {...this.props} messages={chatMessages} onSendMessage={this._handleSendMessage} />
+      <Shell appBar={<ConversationBar chat={chat} onGoBack={() => history.push('/')} />}>
+        <ConversationView {...this.props} messages={messages} onSendMessage={this._handleSendMessage} />
       </Shell>
     )
   }

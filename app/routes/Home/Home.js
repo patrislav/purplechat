@@ -43,7 +43,7 @@ export default class Home extends React.Component {
           </ListItem>
           <MenuItem onTouchTap={() => firebase.auth().signOut()}>Logout</MenuItem>
         </Drawer>
-        <HomeView chats={chats} />
+        <HomeView chats={chats} auth={auth} />
       </Shell>
     )
   }

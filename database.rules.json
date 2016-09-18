@@ -2,17 +2,60 @@
   "rules": {
     "users": {
       "$uid": {
+        ".write": "$uid === auth.uid",
         ".read": "$uid === auth.uid",
-        ".write": "$uid === auth.uid"
+
+        "profile": {
+          ".read": "auth !== null"
+        },
+
+        "chats": {
+          "$chatId": {
+            ".validate": "newData.isBoolean() && root.child('chats').hasChild($chatId)"
+          }
+        }
       }
     },
+
     "chats": {
-      ".read": true,
-      ".write": true
+      "$chatId": {
+        ".read": "data.child('members').hasChild(auth.uid)",
+
+        "lastMessage": {
+          ".write": "data.parent().child('members').hasChild(auth.uid)",
+          ".validate": "newData.hasChildren(['userId', 'text', 'timestamp']) && newData.child('userId').val() === auth.uid"
+        },
+
+        "members": {
+          ".write": "!data.exists() && newData.exists() && newData.hasChild(auth.uid)",
+          "$memberId": {
+            ".validate": "newData.isBoolean() && root.child('users').hasChild($memberId)"
+          }
+        }
+      }
     },
+
     "messages": {
-      ".read": true,
-      ".write": true
+      "$chatId": {
+        ".read": "root.child('chats').child($chatId).child('members').hasChild(auth.uid)",
+
+        "$messageId": {
+          ".validate": "newData.hasChildren(['userId', 'text', 'timestamp'])",
+          ".write": "root.child('chats').child($chatId).child('members').hasChild(auth.uid)",
+
+          "userId": {
+            ".validate": "newData.val() === auth.uid"
+          },
+
+          "text": {
+            ".validate": "newData.isString()"
+          },
+
+          "timestamp": {
+            ".validate": "newData.isNumber() && newData.val() <= now"
+          }
+        }
+      }
     }
   }
 }

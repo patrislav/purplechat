@@ -2,10 +2,10 @@ import React from 'react'
 import Chat from './Chat'
 import {List} from 'material-ui/List'
 
-const ChatList = (props) => (
+const ChatList = ({ chats, auth, onSelect }) => (
   <List>
-    {props.chats.map((chat, i) =>
-      <Chat key={i} chat={chat} onTouchTap={() => props.onSelect(chat)} />
+    {chats.map((chat, i) =>
+      <Chat key={i} chat={chat} auth={auth} onTouchTap={() => onSelect(chat)} />
     )}
   </List>
 )

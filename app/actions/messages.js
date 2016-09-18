@@ -1,6 +1,31 @@
 import Firebase from 'firebase'
 import firebase from 'core/firebase'
 
+let messageQueues = {}
+let queueTimeouts = {}
+
+export function addMessageToQueue(chatId, message, dispatch) {
+  if (!messageQueues.hasOwnProperty(chatId)) {
+    messageQueues[chatId] = [message]
+  }
+  else {
+    messageQueues[chatId].push(message)
+  }
+
+  if (queueTimeouts[chatId]) {
+    return
+  }
+
+  queueTimeouts[chatId] = setTimeout(((dispatch, chatId) => {
+    dispatch({
+      type: 'MESSAGES_LOAD',
+      chatId, messages: messageQueues[chatId]
+    })
+    messageQueues[chatId] = []
+    queueTimeouts[chatId] = null
+  }).bind(null, dispatch, chatId), 50)
+}
+
 export function startMessagesListener(chatId) {
   const messagesRef = firebase.database().ref(`messages/${chatId}`)
 
@@ -8,12 +33,18 @@ export function startMessagesListener(chatId) {
     messagesRef.on('child_added', messageData => {
       const { auth } = getState()
       const key = messageData.key
-      let message = messageData.val()
-      message.isMine = message.userId === auth.uid
-      dispatch({
-        type: 'MESSAGE_ADD',
-        key, chatId, message
-      })
+      let message = Object.assign({},
+        messageData.val(),
+        { key, isMine: messageData.val().userId === auth.uid }
+      )
+
+      addMessageToQueue(chatId, message, dispatch)
+
+      // console.log('Child arrived: ' + message.text)
+      // dispatch({
+      //   type: 'MESSAGE_ADD',
+      //   key, chatId, message
+      // })
     })
   }
 }
