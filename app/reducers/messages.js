@@ -21,27 +21,16 @@ export default function(state = initialState, action) {
     return { ...state, [chatId]: chat }
   }
 
-  case 'MESSAGE_ADD': {
-    const { key, chatId, message } = action
-    const messageWithKey = Object.assign({}, message, { key })
+  case 'MESSAGE_UPDATE': {
+    const { chatId, message } = action
+    let chat = state[chatId].slice(0)
 
-    // console.log('Message added ' + message.text)
-
-    let chat = []
-    if (state[chatId]) {
-      chat = state[chatId]
-      if (!state[chatId].find(message => message.key === key)) {
-        chat.push(messageWithKey)
-      }
-    }
-    else {
-      chat.push(messageWithKey)
+    const index = chat.findIndex(chatMessage => chatMessage.key === message.key)
+    if (index > -1) {
+      chat[index] = Object.assign({}, chat[index], message)
     }
 
-    const newState = { ...state, [chatId]: chat }
-    console.log(newState)
-
-    return newState
+    return { ...state, [chatId]: chat }
   }
 
   default:

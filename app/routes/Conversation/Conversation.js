@@ -29,7 +29,7 @@ export default class Conversation extends React.Component {
   }
 
   render() {
-    const { chatId, allMessages, chat } = this.props
+    const { chatId, allMessages, chat,  } = this.props
     const messages = allMessages[chatId] || []
 
     const appBar = (
@@ -43,7 +43,11 @@ export default class Conversation extends React.Component {
 
     return (
       <Shell appBar={appBar}>
-        <ConversationView {...this.props} messages={messages} onSendMessage={this._handleSendMessage} />
+        <ConversationView
+          messages={messages}
+          onSendMessage={this._handleSendMessage}
+          onReadMessages={this._handleReadMessages}
+          />
       </Shell>
     )
   }
@@ -51,6 +55,10 @@ export default class Conversation extends React.Component {
   _handleSendMessage = (text) => {
     const { userId, chatId } = this.props
     this.actions.sendMessage(chatId, userId, text)
+  }
+
+  _handleReadMessages = (messages) => {
+    this.actions.markMessagesAsRead(this.props.chatId, messages)
   }
 
   _handleChangeName = (newName) => {

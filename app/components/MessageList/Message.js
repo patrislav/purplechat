@@ -1,9 +1,12 @@
 import React from 'react'
 import Paper from 'material-ui/Paper'
+import MessageIndicator from './MessageIndicator'
 
-const style = {
+const containerStyle = {
   width: '100%',
-  display: 'flex'
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end'
 }
 
 const paperStyle = {
@@ -19,7 +22,6 @@ const Message = (props, context) => {
   }
 
   const outgoingStyle = {
-    marginLeft: 'auto',
     backgroundColor: context.muiTheme.palette.primary1Color,
     color: context.muiTheme.palette.alternateTextColor
   }
@@ -27,7 +29,8 @@ const Message = (props, context) => {
   const { message } = props
 
   return (
-    <div style={Object.assign({}, props.style, style)}>
+    <div style={Object.assign({}, props.style, containerStyle)}>
+      {message.isMine ? <MessageIndicator message={message} /> : null}
       <Paper style={Object.assign({}, paperStyle, message.isMine ? outgoingStyle : incomingStyle)}>
         {message.text}
       </Paper>

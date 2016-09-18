@@ -11,25 +11,31 @@ const containerStyle = {
 }
 
 export default class ConversationView extends React.Component {
-  // constructor() {
-  //   super()
-  // }
 
   render() {
+    const { messages, onSendMessage, onReadMessages } = this.props
+
     return (
       <div style={containerStyle}>
-        <div ref="messageList" style={{ flex: '1 1 auto', overflowY: 'auto' }}>
-          <MessageList messages={this.props.messages} />
+        <div ref={c => this.messageList = c} style={{ flex: '1 1 auto', overflowY: 'auto' }}>
+          <MessageList messages={messages} onReadMessages={onReadMessages} />
         </div>
         <div style={{ flex: '0 0 auto' }}>
-          <MessageComposer onSend={this.props.onSendMessage} />
+          <MessageComposer onSend={onSendMessage} />
         </div>
       </div>
     )
   }
 
+  componentDidMount() {
+    this.scrollToBottom()
+  }
+
   componentDidUpdate() {
-    // Scroll to the bottom
-    this.refs.messageList.scrollTop = this.refs.messageList.scrollHeight
+    this.scrollToBottom()
+  }
+
+  scrollToBottom = () => {
+    this.messageList.scrollTop = this.messageList.scrollHeight
   }
 }

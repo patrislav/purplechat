@@ -39,12 +39,20 @@ export function startMessagesListener(chatId) {
       )
 
       addMessageToQueue(chatId, message, dispatch)
+    })
 
-      // console.log('Child arrived: ' + message.text)
-      // dispatch({
-      //   type: 'MESSAGE_ADD',
-      //   key, chatId, message
-      // })
+    messagesRef.on('child_changed', messageData => {
+      const { auth } = getState()
+      const key = messageData.key
+      let message = Object.assign({},
+        messageData.val(),
+        { key, isMine: messageData.val().userId === auth.uid }
+      )
+
+      dispatch({
+        type: 'MESSAGE_UPDATE',
+        chatId, message
+      })
     })
   }
 }
@@ -65,5 +73,15 @@ export function sendMessage(chatId, userId, text) {
   return () => {
     messagesRef.push(message)
     lastMessageRef.set(message)
+  }
+}
+
+export function markMessagesAsRead(chatId, messages) {
+  const messagesRef = firebase.database().ref(`messages/${chatId}`)
+
+  return () => {
+    let updates = {}
+    messages.forEach(message => updates[`${message.key}/read`] = Firebase.database.ServerValue.TIMESTAMP)
+    messagesRef.update(updates)
   }
 }
