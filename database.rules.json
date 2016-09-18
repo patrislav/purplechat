@@ -17,6 +17,10 @@
               ".validate": "newData.isString() && newData.val().length >= 3 && newData.val().length < 50"
             }
           }
+        },
+
+        "connections": {
+          ".read": "auth !== null"
         }
       }
     },

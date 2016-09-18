@@ -11,14 +11,24 @@ export function startAuthListener() {
           uid, displayName, photoURL
         })
 
-        // If the user doesn't exist in the /users node, create it
-        const userRef = firebase.database().ref(`users/${uid}`)
-        userRef.once('value', snapshot => {
+        // If the user's doesn't exist in the /users/$uid/profile node, create it
+        const profileRef = firebase.database().ref(`users/${uid}/profile`)
+        profileRef.once('value', snapshot => {
           const val = snapshot.val()
           if (!val) {
-            userRef.set({
-              profile: { displayName, photoURL }
-            })
+            profileRef.set({ displayName, photoURL })
+          }
+        })
+
+        // Handle online status
+        const myConnectionsRef = firebase.database().ref(`users/${uid}/connections`)
+        const lastOnlineRef = firebase.database().ref(`users/${uid}/lastOnline`)
+        const connectedRef = firebase.database().ref('.info/connected')
+        connectedRef.on('value', connected => {
+          if (connected.val() === true) {
+            const con = myConnectionsRef.push(true)
+            con.onDisconnect().remove()
+            lastOnlineRef.onDisconnect().set(Firebase.database.ServerValue.TIMESTAMP)
           }
         })
       }

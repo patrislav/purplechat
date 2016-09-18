@@ -1,26 +1,31 @@
 import React from 'react'
 import Avatar from 'material-ui/Avatar'
 import CircularProgress from 'material-ui/CircularProgress'
+import {ListItem} from 'material-ui/List'
+import {green600, grey300} from 'material-ui/styles/colors'
 
-const containerStyle = { display: 'flex', height: '100%' }
+const containerStyle = { display: 'flex', height: '100%', lineHeight: 'normal' }
 const avatarStyle = { marginTop: 'auto', marginBottom: 'auto' }
 const titleStyle = {
   fontSize: '18px',
-  marginTop: 'auto',
-  marginBottom: 'auto',
-  paddingLeft: '10px',
   overflow: 'hidden',
-  textOverflow: 'ellipsis'
+  textOverflow: 'ellipsis',
+  margin: 0
 }
 
 const ConversationStatus = (props) => {
   if (props.chat && props.chat.user) {
-    const { displayName, photoURL } = props.chat.user
+    const { displayName, photoURL, presence } = props.chat.user
+
+    const secondaryText = presence ? 'Online now' : 'Offline'
 
     return (
       <div style={containerStyle}>
         <Avatar src={photoURL} style={avatarStyle} />
-        <h2 style={titleStyle}>{displayName}</h2>
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: '10px' }}>
+          <h2 style={titleStyle}>{displayName}</h2>
+          <div style={{ fontSize: '12px', color: grey300 }}>{secondaryText}</div>
+        </div>
       </div>
     )
   }

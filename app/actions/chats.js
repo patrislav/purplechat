@@ -41,13 +41,28 @@ export function startChatsListener() {
 
           const memberIds = Object.keys(members).filter(uid => uid !== auth.uid)
           const userId = memberIds[0]
+
+          dispatch({
+            type: 'CHAT_ADD',
+            key: chatId, userId, lastMessage
+          })
+
           const profileRef = firebase.database().ref(`users/${userId}/profile`)
-          profileRef.once('value', snapshot => {
+          profileRef.on('value', snapshot => {
             const displayName = userChatData.val().displayName || snapshot.val().displayName
             const user = Object.assign({}, snapshot.val(), { userId, displayName })
+
             dispatch({
-              type: 'CHAT_ADD',
-              key: chatId, user, lastMessage
+              type: 'USER_UPDATE',
+              userId, user
+            })
+          })
+
+          const connectionsRef = firebase.database().ref(`users/${userId}/connections`)
+          connectionsRef.on('value', snapshot => {
+            dispatch({
+              type: 'USER_PRESENCE_UPDATE',
+              userId, presence: !!snapshot.val()
             })
           })
         })
@@ -60,7 +75,11 @@ export function startChatsListener() {
         const chatRef = firebase.database().ref(`chats/${chatId}`)
 
         chatRef.once('value', chatData => {
-          const { members } = chatData.val()
+          const { members, lastMessage } = chatData.val()
+          if (lastMessage) {
+            lastMessage.isMine = lastMessage.userId === auth.uid
+          }
+
           const memberIds = Object.keys(members).filter(uid => uid !== auth.uid)
           const userId = memberIds[0]
           const profileRef = firebase.database().ref(`users/${userId}/profile`)
@@ -69,7 +88,7 @@ export function startChatsListener() {
             const user = Object.assign({}, snapshot.val(), { userId, displayName })
             dispatch({
               type: 'CHAT_UPDATE',
-              key: chatId, user
+              key: chatId, user, lastMessage
             })
           })
         })
@@ -82,9 +101,9 @@ export function startChatsListener() {
 
 export function stopChatsListener() {
   return () => {
-    const chatsRef = firebase.database().ref('chats')
-    chatsRef.off()
-    listenerStarted = false
+    // const chatsRef = firebase.database().ref('chats')
+    // chatsRef.off()
+    // listenerStarted = false
   }
 }
 

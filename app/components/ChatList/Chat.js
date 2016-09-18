@@ -1,7 +1,7 @@
 import React from 'react'
 import Avatar from 'material-ui/Avatar'
 import {ListItem} from 'material-ui/List'
-import {darkBlack} from 'material-ui/styles/colors'
+import {darkBlack, green600} from 'material-ui/styles/colors'
 
 const Chat = ({ chat, auth, ...other }, context) => {
   let lastMessage = ''
@@ -13,10 +13,16 @@ const Chat = ({ chat, auth, ...other }, context) => {
     </p>
   }
 
+  const onlineIndicator = (
+    chat.user.presence
+      ? <span style={{ color: green600, fontSize: '1.1em' }}>&bull;</span>
+      : null
+  )
+
   return (
     <ListItem
       {...other}
-      primaryText={chat.user.displayName}
+      primaryText={<span>{chat.user.displayName} {onlineIndicator}</span>}
       secondaryText={lastMessage}
       leftAvatar={<Avatar src={chat.user.photoURL} />}
       />

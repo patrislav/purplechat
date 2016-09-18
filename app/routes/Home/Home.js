@@ -13,7 +13,8 @@ import firebase from 'core/firebase'
 
 @connect(state => ({
   auth: state.auth,
-  chats: state.chats
+  chats: state.chats,
+  users: state.users
 }))
 export default class Home extends React.Component {
   constructor(props) {
@@ -33,7 +34,11 @@ export default class Home extends React.Component {
   }
 
   render() {
-    const { auth, chats } = this.props
+    const { auth, chats, users } = this.props
+
+    const chatsWithUsers = chats
+      .map(chat => Object.assign({}, chat, { user: users[chat.userId] }))
+      .filter(chat => chat.user)
 
     return (
       <Shell appBar={<AppBar onLeftIconButtonTouchTap={() => this.setState({drawerOpen: !this.state.drawerOpen})} />}>
@@ -43,7 +48,7 @@ export default class Home extends React.Component {
           </ListItem>
           <MenuItem onTouchTap={() => firebase.auth().signOut()}>Logout</MenuItem>
         </Drawer>
-        <HomeView chats={chats} auth={auth} />
+        <HomeView chats={chatsWithUsers} auth={auth} />
       </Shell>
     )
   }
