@@ -25,6 +25,14 @@
       }
     },
 
+    "email_uids": {
+      "$email": {
+        ".read": "auth !== null",
+        ".write": "auth !== null && !data.exists() && $email === auth.token.email.replace('.', '%2E')",
+        ".validate": "newData.val() === auth.uid"
+      }
+    },
+
     "chats": {
       "$chatId": {
         ".read": "data.child('members').hasChild(auth.uid)",
@@ -38,6 +46,13 @@
           ".write": "!data.exists() && newData.exists() && newData.hasChild(auth.uid)",
           "$memberId": {
             ".validate": "newData.isBoolean() && root.child('users').hasChild($memberId)"
+          }
+        },
+
+        "typing": {
+          "$userId": {
+            ".write": "$userId === auth.uid && root.child('chats').child($chatId).child('members').hasChild($userId)",
+            ".validate": "newData.isNumber() && newData.val() <= now"
           }
         }
       }

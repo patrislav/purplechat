@@ -46,7 +46,7 @@ export default class Home extends React.Component {
           <ListItem leftAvatar={<Avatar src={auth.photoURL} />}>
             {auth.displayName}
           </ListItem>
-          <MenuItem onTouchTap={() => firebase.auth().signOut()}>Logout</MenuItem>
+          <MenuItem onTouchTap={() => this.actions.signOut()}>Logout</MenuItem>
         </Drawer>
         <HomeView chats={chatsWithUsers} auth={auth} />
       </Shell>

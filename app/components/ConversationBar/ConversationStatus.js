@@ -1,4 +1,5 @@
 import React from 'react'
+import Firebase from 'firebase'
 import Avatar from 'material-ui/Avatar'
 import CircularProgress from 'material-ui/CircularProgress'
 import {ListItem} from 'material-ui/List'
@@ -13,11 +14,10 @@ const titleStyle = {
   margin: 0
 }
 
-const ConversationStatus = (props) => {
-  if (props.chat && props.chat.user) {
-    const { displayName, photoURL, presence } = props.chat.user
-
-    const secondaryText = presence ? 'Online now' : 'Offline'
+const ConversationStatus = ({ chat }) => {
+  if (chat && chat.user) {
+    const { displayName, photoURL, presence } = chat.user
+    const secondaryText = presence ? (chat.typing ? 'typing...' : 'online now') : 'offline'
 
     return (
       <div style={containerStyle}>

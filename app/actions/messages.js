@@ -38,6 +38,13 @@ export function startMessagesListener(chatId) {
         { key, isMine: messageData.val().userId === auth.uid }
       )
 
+      if (!message.isMine) {
+        dispatch({
+          type: 'CHAT_UPDATE_TYPING',
+          key: chatId, typing: false
+        })
+      }
+
       addMessageToQueue(chatId, message, dispatch)
     })
 

@@ -38,7 +38,7 @@ export default class MessageComposer extends React.Component {
           multiLine={true}
           rowsMax={4}
           fullWidth={true}
-          onChange={(e, value) => this.setState({ value })}
+          onChange={this._handleChange}
           onKeyDown={this._handleKeyDown}
           value={this.state.value}
           />

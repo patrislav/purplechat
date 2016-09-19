@@ -52,6 +52,7 @@ export default class Conversation extends React.Component {
           messages={messages}
           onSendMessage={this._handleSendMessage}
           onReadMessages={this._handleReadMessages}
+          onTyping={this._handleTyping}
           />
       </Shell>
     )
@@ -64,6 +65,10 @@ export default class Conversation extends React.Component {
 
   _handleReadMessages = (messages) => {
     this.actions.markMessagesAsRead(this.props.chatId, messages)
+  }
+
+  _handleTyping = () => {
+    this.actions.markAsTyping(this.props.chatId)
   }
 
   _handleChangeName = (newName) => {
