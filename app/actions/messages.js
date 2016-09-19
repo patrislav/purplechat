@@ -75,7 +75,7 @@ export function stopMessagesListener(chatId) {
 export function sendMessage(chatId, userId, text) {
   const messagesRef = firebase.database().ref(`messages/${chatId}`)
   const lastMessageRef = firebase.database().ref(`chats/${chatId}/lastMessage`)
-  const message = { userId, text, timestamp: Firebase.database.ServerValue.TIMESTAMP }
+  const message = { type: 'text', userId, text, timestamp: Firebase.database.ServerValue.TIMESTAMP }
 
   return () => {
     messagesRef.push(message)
