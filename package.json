@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
+    "publish": "NODE_ENV=production npm run build && firebase deploy",
     "start": "webpack-dev-server --content-base build/ --port 3000 --host 0.0.0.0",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

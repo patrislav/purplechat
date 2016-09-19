@@ -1,6 +1,7 @@
 import React from 'react'
 import MessageList from 'components/MessageList'
 import MessageComposer from 'components/MessageComposer'
+import EmojiGrid from 'components/MessageComposer/EmojiGrid'
 
 const containerStyle = {
   flex: '1 1 auto',
@@ -12,6 +13,13 @@ const containerStyle = {
 
 export default class ConversationView extends React.Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      emojiGridOpen: false
+    }
+  }
+
   render() {
     const { messages, onSendMessage, onReadMessages, onTyping } = this.props
 
@@ -21,7 +29,10 @@ export default class ConversationView extends React.Component {
           <MessageList messages={messages} onReadMessages={onReadMessages} />
         </div>
         <div style={{ flex: '0 0 auto' }}>
-          <MessageComposer onSend={onSendMessage} onChange={onTyping} />
+          <MessageComposer
+            onSend={onSendMessage}
+            onChange={onTyping}
+            />
         </div>
       </div>
     )
