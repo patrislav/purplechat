@@ -39,7 +39,7 @@
 
         "lastMessage": {
           ".write": "data.parent().child('members').hasChild(auth.uid)",
-          ".validate": "newData.hasChildren(['userId', 'text', 'timestamp']) && newData.child('userId').val() === auth.uid"
+          ".validate": "newData.hasChildren(['type', 'userId', 'timestamp']) &&((newData.child('type').val() === 'text' && newData.hasChild('text')) || (newData.child('type').val() === 'image' && newData.hasChildren(['attachmentId', 'imageUrl'])) )"
         },
 
         "members": {
@@ -63,9 +63,7 @@
         ".read": "root.child('chats').child($chatId).child('members').hasChild(auth.uid)",
 
         "$messageId": {
-          ".validate": "newData.hasChildren(['type', 'userId', 'timestamp'])
-                        &&((newData.child('type').val() === 'text' && newData.hasChild('text'))
-                        || (newData.child('type').val() === 'image' && newData.hasChildren(['attachmentId', 'imagePath'])) )",
+          ".validate": "newData.hasChildren(['type', 'userId', 'timestamp']) &&((newData.child('type').val() === 'text' && newData.hasChild('text')) || (newData.child('type').val() === 'image' && newData.hasChildren(['attachmentId', 'imageUrl'])) )",
           ".write": "root.child('chats').child($chatId).child('members').hasChild(auth.uid)",
 
           "userId": {
@@ -87,8 +85,7 @@
           },
 
           "attachmentId": {
-            ".validate": "newData.isString() && newData.parent().child('type').val() === 'image'
-                          && root.child('chat_attachments').child($chatId).child(newData.val()).child('userId').val() === auth.uid"
+            ".validate": "newData.isString() && newData.parent().child('type').val() === 'image' && root.child('chat_attachments').child($chatId).child(newData.val()).child('userId').val() === auth.uid"
           },
           "imagePath": {
             ".validate": "newData.isString() && newData.parent().child('type').val() === 'image'"

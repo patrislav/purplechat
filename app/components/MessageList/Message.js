@@ -10,10 +10,15 @@ const containerStyle = {
 }
 
 const paperStyle = {
-  maxWidth: '90%',
+  maxWidth: '85%',
   padding: '10px',
   margin: '4px 7px',
   borderRadius: '10px',
+}
+
+const imageStyle = {
+  maxWidth: '100%',
+  height: 'auto'
 }
 
 const Message = (props, context) => {
@@ -32,7 +37,10 @@ const Message = (props, context) => {
     <div style={Object.assign({}, props.style, containerStyle)}>
       {message.isMine ? <MessageIndicator message={message} /> : null}
       <Paper style={Object.assign({}, paperStyle, message.isMine ? outgoingStyle : incomingStyle)}>
-        {message.text}
+        {message.type === 'image'
+          ? <img style={imageStyle} src={message.imageUrl} />
+          : message.text
+        }
       </Paper>
     </div>
   )

@@ -6,8 +6,10 @@ import IconButton from 'material-ui/IconButton'
 import ContentSend from 'material-ui/svg-icons/content/send'
 import InsertEmoticon from 'material-ui/svg-icons/editor/insert-emoticon'
 import KeyboardIcon from 'material-ui/svg-icons/hardware/keyboard'
+import AttachFileIcon from 'material-ui/svg-icons/editor/attach-file'
 import MessageInput from './MessageInput'
 import EmojiGrid from './EmojiGrid'
+import AttachFile from 'components/AttachFile'
 
 const containerStyle = {
   paddingLeft: '5px',
@@ -22,7 +24,8 @@ export default class MessageComposer extends React.Component {
   }
 
   static propTypes = {
-    onSend: PropTypes.func.isRequired,
+    onSendMessage: PropTypes.func.isRequired,
+    onSendPicture: PropTypes.func.isRequired,
     onChange: PropTypes.func
   }
 
@@ -31,7 +34,8 @@ export default class MessageComposer extends React.Component {
     this.state = {
       value: '',
       emojiCategory: 'people',
-      emojiGridOpen: false
+      emojiGridOpen: false,
+      attachFileOpen: false
     }
   }
 
@@ -40,8 +44,8 @@ export default class MessageComposer extends React.Component {
   }
 
   render() {
-    const { style, onToggleEmojiGrid } = this.props
-    const { emojiGridOpen, emojiCategory, value } = this.state
+    const { style, onToggleEmojiGrid, chatId, userId } = this.props
+    const { emojiGridOpen, emojiCategory, attachFileOpen, value } = this.state
     const { muiTheme } = this.context
 
     /// Nice transition effects for the EmojiGrid (not included, because the element
@@ -69,6 +73,9 @@ export default class MessageComposer extends React.Component {
     return (
       <div>
         <Paper style={Object.assign({}, style, containerStyle)}>
+          <IconButton onTouchTap={this._handleToggleAttachFile}>
+            <AttachFileIcon color={muiTheme.palette.primary3Color} />
+          </IconButton>
           <MessageInput
             ref={c => this.messageInput = c}
             onChange={this._handleChange}
@@ -92,6 +99,9 @@ export default class MessageComposer extends React.Component {
           </div>
           {/* TODO <EmojiCategoryPicker currentCategory={emojiCategory} /> */}
         </div>
+        <div style={{display: (attachFileOpen ? 'block' : 'none')}}>
+          <AttachFile onSendPicture={this._handleSendPicture} chatId={chatId} userId={userId} />
+        </div>
       </div>
     )
   }
@@ -107,11 +117,16 @@ export default class MessageComposer extends React.Component {
   _handleSend = (event) => {
     if (this.state.value) {
       this.setState({ ...this.state, value: '' })
-      this.props.onSend(this.state.value)
+      this.props.onSendMessage(this.state.value)
     }
 
     event.preventDefault()
     // this.messageInput.focus()
+  }
+
+  _handleSendPicture = (snapshot) => {
+    this.setState({ ...this.state, attachFileOpen: false })
+    this.props.onSendPicture(snapshot)
   }
 
   _handleKeyDown = (event) => {
@@ -124,6 +139,7 @@ export default class MessageComposer extends React.Component {
   _handleToggleEmojiGrid = (event) => {
     this.setState({
       ...this.state,
+      attachFileOpen: false,
       emojiGridOpen: !this.state.emojiGridOpen
     })
 
@@ -142,6 +158,14 @@ export default class MessageComposer extends React.Component {
         }
       }, 100)
     }
+  }
+
+  _handleToggleAttachFile = (event) => {
+    this.setState({
+      ...this.state,
+      attachFileOpen: !this.state.attachFileOpen,
+      emojiGridOpen: false
+    })
   }
 
   // TODO: Insert the character at caret instead of attaching it at the end of

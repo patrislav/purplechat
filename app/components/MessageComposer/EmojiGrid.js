@@ -22,7 +22,7 @@ const elementStyle = {
 export default class EmojiGrid extends React.Component {
   constructor(props) {
     super(props)
-    
+
     this.characters = {}
     Object.keys(emoji.emojiList).forEach(category => {
       this.characters[category] = emoji.emojiList[category].map(code => String.fromCodePoint(parseInt(code, 16)))

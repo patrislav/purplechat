@@ -83,6 +83,26 @@ export function sendMessage(chatId, userId, text) {
   }
 }
 
+// TODO Make it a transaction
+export function sendPicture(chatId, userId, snapshot) {
+  const attachmentsRef = firebase.database().ref(`chat_attachments/${chatId}`)
+  const messagesRef = firebase.database().ref(`messages/${chatId}`)
+  const lastMessageRef = firebase.database().ref(`chats/${chatId}/lastMessage`)
+  const path = snapshot.ref.fullPath
+  const imageUrl = snapshot.downloadURL
+
+  const attachment = {
+    type: 'image', userId, path, timestamp: Firebase.database.ServerValue.TIMESTAMP
+  }
+
+  return () => {
+    const attachmentId = attachmentsRef.push(attachment).key
+    const message = { type: 'image', userId, attachmentId, imageUrl, timestamp: Firebase.database.ServerValue.TIMESTAMP }
+    messagesRef.push(message)
+    lastMessageRef.set(message)
+  }
+}
+
 export function markMessagesAsRead(chatId, messages) {
   const messagesRef = firebase.database().ref(`messages/${chatId}`)
 

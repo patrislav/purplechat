@@ -30,7 +30,7 @@ export default class Conversation extends React.Component {
   }
 
   render() {
-    const { chatId, chat, allMessages, allUsers } = this.props
+    const { userId, chatId, chat, allMessages, allUsers } = this.props
     const messages = allMessages[chatId] || []
 
     if (chat) {
@@ -51,8 +51,11 @@ export default class Conversation extends React.Component {
         <ConversationView
           messages={messages}
           onSendMessage={this._handleSendMessage}
+          onSendPicture={this._handleSendPicture}
           onReadMessages={this._handleReadMessages}
           onTyping={this._handleTyping}
+          chatId={chatId}
+          userId={userId}
           />
       </Shell>
     )
@@ -61,6 +64,11 @@ export default class Conversation extends React.Component {
   _handleSendMessage = (text) => {
     const { userId, chatId } = this.props
     this.actions.sendMessage(chatId, userId, text)
+  }
+
+  _handleSendPicture = (snapshot) => {
+    const { userId, chatId } = this.props
+    this.actions.sendPicture(chatId, userId, snapshot)
   }
 
   _handleReadMessages = (messages) => {

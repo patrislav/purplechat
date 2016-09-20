@@ -2,6 +2,7 @@ import React from 'react'
 import Avatar from 'material-ui/Avatar'
 import {ListItem} from 'material-ui/List'
 import {darkBlack, green600} from 'material-ui/styles/colors'
+import AttachmentIcon from 'material-ui/svg-icons/file/attachment'
 
 const Chat = ({ chat, auth, ...other }, context) => {
   let lastMessage = ''
@@ -9,7 +10,12 @@ const Chat = ({ chat, auth, ...other }, context) => {
     lastMessage = <p>
       {chat.lastMessage.isMine ? <span style={{ color: context.muiTheme.palette.textColor }}>You:</span> : null}
       {' '}
-      {chat.lastMessage.text}
+      {chat.lastMessage.type === 'image'
+        ? <span style={{ fontStyle: 'italic' }}>
+            <AttachmentIcon style={{ width: '12px', height: '12px' }} /> Attachment
+          </span>
+        : chat.lastMessage.text
+      }
     </p>
   }
 

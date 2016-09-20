@@ -21,7 +21,7 @@ export default class ConversationView extends React.Component {
   }
 
   render() {
-    const { messages, onSendMessage, onReadMessages, onTyping } = this.props
+    const { messages, onSendMessage, onSendPicture, onReadMessages, onTyping, ...otherProps } = this.props
 
     return (
       <div style={containerStyle}>
@@ -30,8 +30,10 @@ export default class ConversationView extends React.Component {
         </div>
         <div style={{ flex: '0 0 auto' }}>
           <MessageComposer
-            onSend={onSendMessage}
+            onSendMessage={onSendMessage}
+            onSendPicture={onSendPicture}
             onChange={onTyping}
+            {...otherProps}
             />
         </div>
       </div>

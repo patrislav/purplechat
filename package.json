@@ -24,11 +24,15 @@
       "stage-0",
       "react"
     ],
-    "plugins": ["transform-decorators-legacy"]
+    "plugins": [
+      "transform-decorators-legacy"
+    ]
   },
   "dependencies": {
+    "blueimp-load-image": "^2.6.2",
     "firebase": "^3.4.0",
     "history": "^4.2.0",
+    "j-i-c": "^2.0.2",
     "material-ui": "^0.15.4",
     "path-to-regexp": "^1.5.3",
     "react": "^15.3.1",
