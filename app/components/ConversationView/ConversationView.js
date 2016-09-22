@@ -26,7 +26,11 @@ export default class ConversationView extends React.Component {
     return (
       <div style={containerStyle}>
         <div ref={c => this.messageList = c} style={{ flex: '1 1 auto', overflowY: 'auto' }}>
-          <MessageList messages={messages} onReadMessages={onReadMessages} />
+          <MessageList
+            messages={messages}
+            onReadMessages={onReadMessages}
+            onLoadAttachment={() => this.scrollToBottom()}
+            />
         </div>
         <div style={{ flex: '0 0 auto' }}>
           <MessageComposer

@@ -34,6 +34,7 @@
     "history": "^4.2.0",
     "j-i-c": "^2.0.2",
     "material-ui": "^0.15.4",
+    "moment": "^2.15.1",
     "path-to-regexp": "^1.5.3",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
