@@ -1,5 +1,6 @@
 import Firebase from 'firebase'
 import firebase from 'core/firebase'
+import { initialisePush } from './notifications'
 
 let currentConnectionId = null
 
@@ -12,6 +13,8 @@ export function startAuthListener() {
           type: 'LOGIN',
           uid, displayName, photoURL
         })
+
+        initialisePush()(dispatch, getState)
 
         // If the user doesn't exist in the /users/$uid/profile node, create it
         const profileRef = firebase.database().ref(`users/${uid}/profile`)

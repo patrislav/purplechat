@@ -31,3 +31,8 @@ const component = (
 ReactDOM.render(component, mountNode)
 
 setTimeout(() => store.dispatch(actions.startAuthListener()))
+
+// Add service worker functionality
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js')
+}

@@ -2,7 +2,8 @@ const initialState = {
   status: null,
   uid: null,
   displayName: null,
-  photoURL: null
+  photoURL: null,
+  pushSubscription: null
 }
 
 export default function(state = initialState, action) {
@@ -18,6 +19,11 @@ export default function(state = initialState, action) {
     const { uid, displayName, photoURL } = action
     state = { ...state, status: 'signed_in', uid, displayName, photoURL }
     return state
+  }
+
+  case 'PUSH_SUBSCRIPTION_CHANGED': {
+    const { pushSubscription } = action
+    return { ...state, pushSubscription }
   }
 
   default:

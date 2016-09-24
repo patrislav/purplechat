@@ -8,13 +8,15 @@ const pkg = require('./package.json')
 const DEBUG = process.env.NODE_ENV !== 'production'
 
 let config = {
-  entry: [
-    path.resolve(__dirname, 'app/client.js')
-  ],
+  entry: {
+    app: path.resolve(__dirname, 'app/client.js'),
+    '../service-worker': path.resolve(__dirname, 'app/service-worker.js'),
+    // 'sw-toolbox': 'sw-toolbox'
+  },
   output: {
     path: path.resolve(__dirname, 'build/dist'),
     publicPath: 'dist',
-    filename: 'bundle.js'
+    filename: '[name].js'
   },
   module: {
     loaders: [
@@ -35,15 +37,18 @@ let config = {
     ]
   },
   resolve: {
-    root: path.resolve(__dirname, 'app'),
-    extensions: ['', '.js'],
-    alias: {
-      actions: 'actions',
-      components: 'components',
-      core: 'core',
-      reducers: 'reducers',
-      routes: 'routes'
-    }
+    // extensions: ['.js'],
+    // alias: {
+    //   actions: 'actions',
+    //   components: 'components',
+    //   core: 'core',
+    //   reducers: 'reducers',
+    //   routes: 'routes'
+    // }
+    modules: [
+      path.resolve(__dirname, 'app'),
+      path.resolve(__dirname, 'node_modules')
+    ]
   },
   devtool: DEBUG ? 'source-map' : 'cheap-module-source-map'
 }
@@ -56,11 +61,7 @@ if (!DEBUG) {
       }
     }),
     new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
-    }),
+    new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.AggressiveMergingPlugin()
   ]
 }

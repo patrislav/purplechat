@@ -9,12 +9,14 @@ import Shell from 'components/Shell'
 import AppBar from 'components/AppBar'
 import Drawer from 'components/Drawer'
 import HomeView from 'components/HomeView'
+import NotificationsSetting from 'components/NotificationsSetting'
 import firebase from 'core/firebase'
 
 @connect(state => ({
   auth: state.auth,
   chats: state.chats,
-  users: state.users
+  users: state.users,
+  settings: state.settings
 }))
 export default class Home extends React.Component {
   constructor(props) {
@@ -34,7 +36,7 @@ export default class Home extends React.Component {
   }
 
   render() {
-    const { auth, chats, users } = this.props
+    const { auth, chats, users, settings } = this.props
 
     const chatsWithUsers = chats
       .map(chat => Object.assign({}, chat, { user: users[chat.userId] }))
@@ -46,10 +48,31 @@ export default class Home extends React.Component {
           <ListItem leftAvatar={<Avatar src={auth.photoURL} />}>
             {auth.displayName}
           </ListItem>
+          <NotificationsSetting
+            disabled={settings.notifications.disabled}
+            toggled={settings.notifications.toggled}
+            onToggle={this.handleNotificationsSettingToggle}
+            />
           <MenuItem onTouchTap={() => this.actions.signOut()}>Logout</MenuItem>
         </Drawer>
         <HomeView chats={chatsWithUsers} auth={auth} />
       </Shell>
     )
+  }
+
+  handleNotificationsSettingToggle = () => {
+    const { disabled, toggled } = this.props.settings.notifications
+
+    // If we can't change anything, why even try?
+    if (disabled) {
+      return
+    }
+
+    if (toggled) {
+      this.actions.pushUnsubscribe()
+    }
+    else {
+      this.actions.pushSubscribe()
+    }
   }
 }
