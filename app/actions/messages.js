@@ -23,7 +23,7 @@ export function addMessageToQueue(chatId, message, dispatch) {
     })
     messageQueues[chatId] = []
     queueTimeouts[chatId] = null
-  }).bind(null, dispatch, chatId), 50)
+  }).bind(null, dispatch, chatId), 500)
 }
 
 export function startMessagesListener(chatId) {
@@ -38,7 +38,8 @@ export function startMessagesListener(chatId) {
         { key, isMine: messageData.val().userId === auth.uid }
       )
 
-      if (!message.isMine) {
+      const chat = getState().chats[chatId]
+      if (!message.isMine && chat && chat.typing) {
         dispatch({
           type: 'CHAT_UPDATE_TYPING',
           key: chatId, typing: false
@@ -56,10 +57,10 @@ export function startMessagesListener(chatId) {
         { key, isMine: messageData.val().userId === auth.uid }
       )
 
-      dispatch({
-        type: 'MESSAGE_UPDATE',
-        chatId, message
-      })
+      // dispatch({
+      //   type: 'MESSAGE_UPDATE',
+      //   chatId, message
+      // })
     })
   }
 }

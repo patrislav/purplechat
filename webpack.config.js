@@ -9,7 +9,10 @@ const DEBUG = process.env.NODE_ENV !== 'production'
 
 let config = {
   entry: {
-    app: path.resolve(__dirname, 'app/client.js'),
+    app: [
+      'babel-polyfill',
+      path.resolve(__dirname, 'app/client.js')
+    ],
     '../service-worker': path.resolve(__dirname, 'app/service-worker.js'),
     // 'sw-toolbox': 'sw-toolbox'
   },

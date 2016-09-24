@@ -10,7 +10,7 @@ import firebase from 'core/firebase'
 
 @connect((state, ownProps) => ({
   userId: state.auth.uid,
-  chat: state.chats.find(chat => chat.key === ownProps.chatId),
+  chat: state.chats[ownProps.chatId],
   allUsers: state.users,
   allMessages: state.messages
 }))

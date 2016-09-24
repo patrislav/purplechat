@@ -21,4 +21,24 @@ export default class MessageInput extends React.Component {
       this.input.focus()
     }
   }
+
+  getInputNode() {
+    if (this.input) {
+      return this.input.getInputNode()
+    }
+  }
+
+  get value() {
+    if (this.input) {
+      return this.input.getValue()
+    }
+  }
+
+  set value(value) {
+    if (this.input) {
+      this.getInputNode().value = value
+      this.input.setState({ hasValue: value != null && value != '', isClean: false })
+      this.input.forceUpdate()
+    }
+  }
 }

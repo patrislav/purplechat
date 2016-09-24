@@ -14,7 +14,7 @@ import firebase from 'core/firebase'
 
 @connect(state => ({
   auth: state.auth,
-  chats: state.chats,
+  chats: Object.values(state.chats),
   users: state.users,
   settings: state.settings
 }))

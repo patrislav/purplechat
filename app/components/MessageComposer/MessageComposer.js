@@ -81,7 +81,6 @@ export default class MessageComposer extends React.Component {
             onChange={this._handleChange}
             onKeyDown={this._handleKeyDown}
             onFocus={this._handleInputFocus}
-            value={value}
             />
           <IconButton onTouchTap={this._handleToggleEmojiGrid}>
             {emojiGridOpen
@@ -107,17 +106,15 @@ export default class MessageComposer extends React.Component {
   }
 
   _handleChange = (event, value) => {
-    this.setState({ ...this.state, value })
-
     if (this.props.onChange) {
       this.props.onChange(value)
     }
   }
 
   _handleSend = (event) => {
-    if (this.state.value) {
-      this.setState({ ...this.state, value: '' })
-      this.props.onSendMessage(this.state.value)
+    if (this.messageInput.value) {
+      this.props.onSendMessage(this.messageInput.value)
+      this.messageInput.value = null
     }
 
     event.preventDefault()

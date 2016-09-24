@@ -1,15 +1,14 @@
-const initialState = []
+const initialState = {}
 
 function chatUpdate(state, key, name, value) {
-  state = state.slice(0)
-
-  const index = state.findIndex(chat => chat.key === key)
-  if (index > -1) {
-    state[index] = Object.assign({}, state[index], { [name]: value })
-    return state
+  let chat
+  if (!(key in state)) {
+    state[key] = { key }
   }
 
-  return [...state, { key, [name]: value }]
+  chat = state[key]
+  
+  return {...state, [key]: { ...chat, [name]: value }}
 }
 
 export default function(state = initialState, action) {

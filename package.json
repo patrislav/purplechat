@@ -37,6 +37,7 @@
     ]
   },
   "dependencies": {
+    "babel-polyfill": "^6.13.0",
     "blueimp-load-image": "^2.6.2",
     "firebase": "^3.4.0",
     "history": "^4.2.0",
