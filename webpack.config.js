@@ -2,24 +2,29 @@
 'use strict'
 
 const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 const pkg = require('./package.json')
 
 const DEBUG = process.env.NODE_ENV !== 'production'
 
+// Load all dependecies except sw-toolbox which is only needed for the service-worker
+const vendorDependecies = Object.keys(pkg.dependencies)
+
+const chunkName = '[name].[chunkhash].js'
+
 let config = {
   entry: {
+    vendor: vendorDependecies,
     app: [
       'babel-polyfill',
       path.resolve(__dirname, 'app/client.js')
-    ],
-    '../service-worker': path.resolve(__dirname, 'app/service-worker.js'),
-    // 'sw-toolbox': 'sw-toolbox'
+    ]
   },
   output: {
     path: path.resolve(__dirname, 'build/dist'),
     publicPath: 'dist',
-    filename: '[name].js'
+    filename: chunkName
   },
   module: {
     loaders: [
@@ -56,6 +61,14 @@ let config = {
   devtool: DEBUG ? 'source-map' : 'cheap-module-source-map'
 }
 
+config.plugins = [
+  new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: chunkName }),
+  new HtmlWebpackPlugin({
+    template: path.resolve(__dirname, 'app/index.ejs'),
+    filename: '../index.html'
+  })
+]
+
 if (!DEBUG) {
   config.plugins = [
     new webpack.DefinePlugin({
@@ -65,7 +78,8 @@ if (!DEBUG) {
     }),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin(),
-    new webpack.optimize.AggressiveMergingPlugin()
+    // new webpack.optimize.AggressiveMergingPlugin(),
+    ...config.plugins
   ]
 }
 

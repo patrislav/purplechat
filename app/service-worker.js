@@ -1,11 +1,9 @@
 /* global importScripts */
-import 'file?name=../sw-toolbox.js!sw-toolbox/sw-toolbox'
 
 (self => {
   importScripts('/sw-toolbox.js')
 
   /// INSTALLATION AND ACTIVATION OF THE WORKER
-
   self.addEventListener('install', event => {
     event.waitUntil(self.skipWaiting())
   })
@@ -23,6 +21,7 @@ import 'file?name=../sw-toolbox.js!sw-toolbox/sw-toolbox'
       icon: data ? data.sender.photoURL : '/images/icon-192.png',
       vibrate: [200, 100, 200, 100, 400],
       tag: data ? `purplechat-${data.chatId}` : 'purplechat-message',
+      renotify: true,
       data: {
         url: '/#/messages/' + data.chatId
       }
@@ -55,7 +54,7 @@ import 'file?name=../sw-toolbox.js!sw-toolbox/sw-toolbox'
 
   /// CACHING
 
-  self.toolbox.router.get('/(.*)', self.toolbox.networkFirst, {
+  self.toolbox.router.get('/dist/(.*)', self.toolbox.fastest, {
     cache: {
       name: 'bundle-cache-v1',
       maxEntries: 10

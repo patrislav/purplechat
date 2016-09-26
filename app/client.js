@@ -9,12 +9,15 @@ import Router from './core/Router'
 import routes from './routes'
 import Shell from 'components/Shell'
 
-import 'file?name=../[name].[ext]!./index.html'
+// import 'file?name=../[name].[ext]!./index.html'
 import 'file?name=../[name].[ext]!./manifest.json'
 import 'file?name=../images/[name].[ext]!../assets/favicon.ico'
 import 'file?name=../images/[name].[ext]!../assets/icon-48.png'
 import 'file?name=../images/[name].[ext]!../assets/icon-96.png'
 import 'file?name=../images/[name].[ext]!../assets/icon-192.png'
+
+import 'file?name=../sw-toolbox.js!sw-toolbox/sw-toolbox'
+import 'file?name=../service-worker.js!./service-worker'
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
