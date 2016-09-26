@@ -15,8 +15,8 @@ const titleStyle = {
 }
 
 const ConversationStatus = ({ chat }) => {
-  if (chat && chat.user) {
-    const { displayName, photoURL, presence } = chat.user
+  if (chat) {
+    const { displayName, photoURL, presence } = chat
     const secondaryText = presence ? (chat.typing ? 'typing...' : 'online now') : 'offline'
 
     return (

@@ -40,6 +40,7 @@
     "blueimp-load-image": "^2.6.2",
     "firebase": "^3.4.0",
     "history": "^4.2.0",
+    "idb": "^1.1.4",
     "material-ui": "^0.15.4",
     "moment": "^2.15.1",
     "path-to-regexp": "^1.5.3",

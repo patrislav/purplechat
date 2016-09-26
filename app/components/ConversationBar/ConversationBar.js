@@ -40,7 +40,7 @@ export default class ConversationBar extends React.Component {
         {chat && this.state.dialogOpen
           ? <ChangeChatNameDialog
             open={this.state.dialogOpen}
-            currentName={chat.user.displayName}
+            currentName={chat.displayName}
             onRequestClose={this._handleDialogClose}
             onChangeName={this._handleChangeName}
             onRestoreDefault={this._handleRestoreDefault}

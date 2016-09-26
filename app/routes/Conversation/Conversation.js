@@ -11,7 +11,6 @@ import firebase from 'core/firebase'
 @connect((state, ownProps) => ({
   userId: state.auth.uid,
   chat: state.chats[ownProps.chatId],
-  allUsers: state.users,
   allMessages: state.messages
 }))
 export default class Conversation extends React.Component {
@@ -30,12 +29,8 @@ export default class Conversation extends React.Component {
   }
 
   render() {
-    const { userId, chatId, chat, allMessages, allUsers } = this.props
+    const { userId, chatId, chat, allMessages } = this.props
     const messages = allMessages[chatId] || []
-
-    if (chat) {
-      chat.user = allUsers[chat.userId]
-    }
 
     const appBar = (
       <ConversationBar

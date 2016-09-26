@@ -20,7 +20,7 @@ const Chat = ({ chat, auth, ...other }, context) => {
   }
 
   const onlineIndicator = (
-    chat.user.presence
+    chat.presence
       ? <span style={{ color: green600, fontSize: '1.1em' }}>&bull;</span>
       : null
   )
@@ -28,9 +28,9 @@ const Chat = ({ chat, auth, ...other }, context) => {
   return (
     <ListItem
       {...other}
-      primaryText={<span>{chat.user.displayName} {onlineIndicator}</span>}
+      primaryText={<span>{chat.displayName} {onlineIndicator}</span>}
       secondaryText={lastMessage}
-      leftAvatar={<Avatar src={chat.user.photoURL} />}
+      leftAvatar={<Avatar src={chat.photoURL} />}
       />
   )
 }
