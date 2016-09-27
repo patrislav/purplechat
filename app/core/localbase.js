@@ -1,6 +1,8 @@
 import firebase from 'core/firebase'
 import idb from 'idb'
 
+export default { onChatAdded, onChatChanged }
+
 /**
 purplechat-chats
 {
@@ -19,15 +21,6 @@ purplechat-messages
   ....
 }
 **/
-
-function openChatDB(storeName) {
-  return idb.open(storeName, 1, upgradeDB => {
-    switch (upgradeDB.oldVersion) {
-    case 0:
-      upgradeDB.createObjectStore(storeName, { keyPath: 'chatId' })
-    }
-  })
-}
 
 function onChatAdded(currentUserId, callback) {
   const storeName = 'purplechat-chats'
@@ -104,6 +97,16 @@ function onChatChanged(currentUserId, callback) {
   })
 }
 
+
+function openChatDB(storeName) {
+  return idb.open(storeName, 1, upgradeDB => {
+    switch (upgradeDB.oldVersion) {
+    case 0:
+      upgradeDB.createObjectStore(storeName, { keyPath: 'chatId' })
+    }
+  })
+}
+
 function saveChat(dbPromise, storeName, chat) {
   dbPromise.then(db => {
     const readStore = db.transaction(storeName, 'readonly').objectStore(storeName)
@@ -120,48 +123,3 @@ function saveChat(dbPromise, storeName, chat) {
       })
   })
 }
-
-
-function getUserProfile(userId, callback) {
-  const storeName = 'purplechat-user-profiles'
-  const dbPromise = idb.open(storeName, 1, upgradeDB => {
-    switch (upgradeDB.oldVersion) {
-    case 0:
-      upgradeDB.createObjectStore(storeName, { keyPath: 'userId' })
-    }
-  })
-
-  dbPromise.then(db => {
-    const tx = db.transaction(storeName, 'readwrite')
-    const store = tx.objectStore(storeName)
-    let inIDB = false
-
-    store.get(userId)
-      .then(dbUser => {
-        // If user exists in the database, let's return it immediately
-        if (dbUser) {
-          inIDB = true
-          callback(dbUser, null)
-        }
-
-        // Then switch to Firebase
-        const profileRef = firebase.database().ref(`users/${userId}/profile`)
-        profileRef.on('value', snapshot => {
-          const user = Object.assign({}, snapshot.val(), { userId })
-          callback(user, null)
-
-          // Write the result to database for later
-          const store2 = db.transaction(storeName, 'readwrite').objectStore(storeName)
-          if (inIDB) {
-            store2.put(user)
-          }
-          else {
-            inIDB = true
-            store2.add(user)
-          }
-        })
-      })
-  })
-}
-
-export default { onChatAdded, onChatChanged, getUserProfile }
