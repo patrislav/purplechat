@@ -11,7 +11,7 @@ const DEBUG = process.env.NODE_ENV !== 'production'
 // Load all dependecies except sw-toolbox which is only needed for the service-worker
 const vendorDependecies = Object.keys(pkg.dependencies)
 
-const chunkName = '[name].[chunkhash].js'
+const chunkName = DEBUG ? '[name].js' : '[name].[chunkhash].js'
 
 let config = {
   entry: {
