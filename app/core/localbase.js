@@ -23,7 +23,7 @@ purplechat-messages
 **/
 
 function onChatAdded(currentUserId, callback) {
-  const storeName = 'purplechat-chats'
+  const storeName = `purplechat-${currentUserId}-chats`
   const dbPromise = openChatDB(storeName)
 
   // Get the chats one by one
@@ -66,7 +66,7 @@ function onChatAdded(currentUserId, callback) {
 }
 
 function onChatChanged(currentUserId, callback) {
-  const storeName = 'purplechat-chats'
+  const storeName = `purplechat-${currentUserId}-chats`
   const dbPromise = openChatDB(storeName)
 
   const userChatsRef = firebase.database().ref(`users/${currentUserId}/chats`)

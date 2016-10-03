@@ -82,5 +82,3 @@ export default class Conversation extends React.Component {
     this.actions.restoreDefaultChatName(this.props.chatId)
   }
 }
-
-export default Conversation

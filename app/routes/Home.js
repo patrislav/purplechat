@@ -50,9 +50,13 @@ export default class Home extends React.Component {
             />
           <MenuItem onTouchTap={() => this.actions.signOut()}>Logout</MenuItem>
         </Drawer>
-        <HomeView chats={chats} auth={auth} />
+        <HomeView chats={chats} auth={auth} onAddConversation={this.handleAddConversation} />
       </Shell>
     )
+  }
+
+  handleAddConversation = (email) => {
+    this.actions.createChat(email)
   }
 
   handleNotificationsSettingToggle = () => {

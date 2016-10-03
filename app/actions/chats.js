@@ -111,6 +111,18 @@ export function markAsTyping(chatId) {
   }
 }
 
-export function createChat() {
+export function createChat(email) {
+  return (dispatch, getState) => {
+    if (email === getState().auth.email) {
+      return
+    }
 
+    const safeEmail = email.replace(/\./g, '%2E')
+    const emailUidRef = firebase.database().ref(`email_uids/${safeEmail}`)
+    emailUidRef.once('value', snapshot => {
+      if (snapshot.val()) {
+        // TODO: Add the conversation
+      }
+    })
+  }
 }

@@ -52,14 +52,12 @@ export default class ConversationBar extends React.Component {
 
   _handleDialogOpen = () => {
     this.setState({
-      ...this.state,
       dialogOpen: true
     })
   }
 
   _handleDialogClose = () => {
     this.setState({
-      ...this.state,
       dialogOpen: false
     })
   }
